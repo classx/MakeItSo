@@ -15,7 +15,7 @@ class TaskCellViewModel: ObservableObject, Identifiable  {
   
   @Published var task: Task
   
-  var id: String = ""
+  var id: String = UUID().uuidString
   @Published var completionStateIconName = ""
   
   private var cancellables = Set<AnyCancellable>()
@@ -33,7 +33,7 @@ class TaskCellViewModel: ObservableObject, Identifiable  {
       .store(in: &cancellables)
 
     $task
-      .map { $0.id }
+      .compactMap { $0.id }
       .assign(to: \.id, on: self)
       .store(in: &cancellables)
     

@@ -17,7 +17,8 @@ class TaskListViewModel: ObservableObject {
   private var cancellables = Set<AnyCancellable>()
   
   init() {
-    taskRepository.$tasks.map { tasks in
+    taskRepository.$tasks
+      .map { tasks in
       tasks.map { task in
         TaskCellViewModel(task: task)
       }
@@ -32,9 +33,13 @@ class TaskListViewModel: ObservableObject {
     viewModels.forEach { taskCellViewModel in
       taskRepository.removeTask(taskCellViewModel.task)
     }
+    
+    // remove from models
+    taskCellViewModels.remove(atOffsets: indexSet)
   }
   
   func addTask(task: Task) {
+    taskCellViewModels.append(TaskCellViewModel(task: task))
     taskRepository.addTask(task)
   }
 }
